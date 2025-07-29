@@ -140,11 +140,11 @@ static const char* get_level_color(log_level_t level) {
     }
 
     // Convenience macros for different log levels
-    #define log_debug(format, ...)    log_message(LOG_DEBUG, format, ##__VA_ARGS__)
-    #define log_info(format, ...)     log_message(LOG_INFO, format, ##__VA_ARGS__)
-    #define log_warning(format, ...)  log_message(LOG_WARNING, format, ##__VA_ARGS__)
-    #define log_error(format, ...)    log_message_with_location(LOG_ERROR, __FILE__, __LINE__, format, ##__VA_ARGS__)
-    #define log_critical(format, ...) log_message_with_location(LOG_CRITICAL, __FILE__, __LINE__, format, ##__VA_ARGS__)
+    #define print_debug(format, ...)    log_message(LOG_DEBUG, format, ##__VA_ARGS__)
+    #define print_info(format, ...)     log_message(LOG_INFO, format, ##__VA_ARGS__)
+    #define print_warning(format, ...)  log_message(LOG_WARNING, format, ##__VA_ARGS__)
+    #define print_error(format, ...)    log_message_with_location(LOG_ERROR, __FILE__, __LINE__, format, ##__VA_ARGS__)
+    #define print_critical(format, ...) log_message_with_location(LOG_CRITICAL, __FILE__, __LINE__, format, ##__VA_ARGS__)
 
 #endif // NDEBUG
 
