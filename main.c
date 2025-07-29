@@ -1,6 +1,8 @@
 #include "log.h"
 
 int main() {
+    set_log_level(LOG_ERROR);
+    
     // These work in debug builds, disappear in production
     print_info("This is an info");
     print_debug("Debug Var = %d", 55);
