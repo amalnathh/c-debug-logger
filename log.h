@@ -81,10 +81,8 @@ static const char* get_level_color(log_level_t level) {
         const char* color = get_level_color(level);
         const char* reset = ENABLE_COLORS ? RESET_COLOR : "";
         
-        // Print log level with optional color
         printf("%s[%s]%s: ", color, level_str, reset);
         
-        // Print the actual message using variadic arguments
         va_list args;
         va_start(args, format);
         vprintf(format, args);
@@ -92,7 +90,6 @@ static const char* get_level_color(log_level_t level) {
         
         printf("\n");
         
-        // For embedded systems, you might want to ensure immediate output
         #ifdef EMBEDDED_FLUSH
         fflush(stdout);
         #endif
@@ -108,24 +105,20 @@ static const char* get_level_color(log_level_t level) {
         const char* color = get_level_color(level);
         const char* reset = ENABLE_COLORS ? RESET_COLOR : "";
         
-        // Extract just the filename (not full path)
         const char* filename = strrchr(file, '/');
         if (filename) {
-            filename++;  // Skip the '/'
+            filename++;
         } else {
-            // Try Windows path separator
             filename = strrchr(file, '\\');
             if (filename) {
-                filename++;  // Skip the '\'
+                filename++;
             } else {
-                filename = file;  // No path separator found, use as-is
+                filename = file;
             }
         }
         
-        // Print log level with file and line info
         printf("%s[%s]%s %s:%d: ", color, level_str, reset, filename, line);
         
-        // Print the actual message using variadic arguments
         va_list args;
         va_start(args, format);
         vprintf(format, args);
@@ -133,7 +126,6 @@ static const char* get_level_color(log_level_t level) {
         
         printf("\n");
         
-        // For embedded systems, you might want to ensure immediate output
         #ifdef EMBEDDED_FLUSH
         fflush(stdout);
         #endif
@@ -156,6 +148,42 @@ static void set_log_level(log_level_t level) {
 // Function to get current log level
 static log_level_t get_log_level(void) {
     return current_log_level;
+}
+
+// -----------------------------------------------------------------------------
+// New function: getInput
+// -----------------------------------------------------------------------------
+static int getInput(const char *message, const char *options[], int option_count) {
+    if (!message || !options || option_count <= 0) {
+        return -1;
+    }
+
+    int choice = -1;
+    while (1) {
+        // Print the message
+        printf("%s%s%s\n", ENABLE_COLORS ? INFO_COLOR : "", message, ENABLE_COLORS ? RESET_COLOR : "");
+
+        // List all options
+        for (int i = 0; i < option_count; i++) {
+            printf("  %d) %s\n", i + 1, options[i]);
+        }
+
+        printf("Enter choice (1-%d): ", option_count);
+
+        // Read input
+        if (scanf("%d", &choice) != 1) {
+            while (getchar() != '\n'); // Clear buffer
+            print_warning("Invalid input. Please enter a number.");
+            continue;
+        }
+
+        if (choice < 1 || choice > option_count) {
+            print_warning("Choice out of range. Please try again.");
+            continue;
+        }
+
+        return choice - 1; // Return zero-based index
+    }
 }
 
 #endif // LOG_H
